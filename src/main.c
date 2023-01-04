@@ -2,27 +2,102 @@
 #include <stdio.h>//imports basic libraries
 #include <math.h>//imports more math operations
 
+char select(char item) {
+	puts("Welcome to my Command-Line Calculator (CLC)\nDeveloper: Abid Rahman\nVersion: 3\nDate: November 28th 2022\n----------------------------------------------------\n\nSelect one of the following items:\nB) - Binary Mathematical Operations, such as addition and subtraction.\nU) - Unary Mathematical Operations, such as square root, and log.\nA) - Advances Mathematical Operations, using variables, arrays.\nV) â€“ Define variables and assign them values.\nE) - Exit");
+	scanf(" %c", &item);//takes the input for the item
+	while (1) {
+		if (item == 'B' || item == 'U' || item == 'A' || item == 'V' || item == 'E') {
+			break;
+		}
+		else {
+			puts("Invalid input, please enter again");
+			while (getchar() != '\n');//flushes the input so the input can be entered again
+			scanf("%c", &item);//asks for the input again
+		}
+	}
+	return item;
+}
+float binary(float num1, char operation, float num2) {
+	if (operation == '+') {//if the operation is addition
+		return num1 + num2;//print the sum
+	}
+	else if (operation == '-') {//if the operation is subtraction
+		return num1 - num2;//print the difference
+	}
+	else if (operation == '*') {//if the operation is multiplication
+		return num1 * num2;//print the product
+	}
+	else if (operation == '/') {//if the operation is division
+		return num1 / num2;//print the quotient
+	}
+	else if (operation == '%') {//if the operation is division
+		int modnum1;//converts it to integer since modulus doesn't accept float values
+		int modnum2;//converts it to integer since modulus doesn't accept float values
+		modnum1 = (int)(num1);
+		modnum2 = (int)(num2);
+		return (float)(modnum1 % modnum2);//print the remainder
+	}
+	else if (operation == 'P') {//if the operation is power
+		return pow(num1, num2);//print the power result
+	}
+	else if (operation == 'X') {//if the operation is maximum
+		return num1 > num2 ? (num1) : (num2);//print the maximum
+	}
+	else if (operation == 'I') {//if the operation is minimum
+		return num1 < num2 ? (num1) : (num2);//print the minimum
+	}
+	else {
+		puts("Invalid operation");//asks for input again if invalid operation
+	}
+}
+float unary(float num, char operation) {
+	if (operation == 'S') {//if the operation is square root
+		return sqrt(num);//print the square root
+	}
+	else if (operation == 'L') {//if the operation is log
+		return log(num);//print the log
+	}
+	else if (operation == 'E') {//if the operation is e
+		return exp(num);//print the e
+	}
+	else if (operation == 'C') {//if the operation is ceiling
+		return ceil(num);//print the ceiling
+	}
+	else if (operation == 'F') {//if the operation is floor
+		return floor(num);//print the floor
+	}
+	else {
+		puts("Invalid operation");//asks for input again if invalid operation
+	}
+}
+int done(char item, char item2) {
+	if (item2 == 'E') {//if the second item is E then break the loop
+		return 1;
+	}
+	if (item == 'E') {//if the item is E then exit the program
+		exit(0);
+	}
+}
+
 int main(void) {
-	printf("Welcome to my Command-Line Calculator (CLC)\nDeveloper: Abid Rahman\nVersion: 2\nDate: November 18th 2022\n----------------------------------------------------\n\nSelect one of the following items:\nB) - Binary Mathematical Operations, such as addition and subtraction.\nU) - Unary Mathematical Operations, such as square root, and log.\nA) - Advances Mathematical Operations, using variables, arrays.\nV) – Define variables and assign them values.\nE) - Exit\n");//welcome message 
 	int valid = 0;//creates a boolean to see if an input is valid or not
 	int set = 0;//creates a boolean of if a variable was created or not
-	float variables[5] = {0, 0, 0, 0, 0};//creates array of 5 variables
-	char item;//creates item variable to know which set of operations the calculator will be performing from
-	char item2;//creates item variable to know which set of operations the calculator will be performing from after inputting for advanced
-	item = 0;//sets default value for item
+	float variables[5] = { 0, 0, 0, 0, 0 };//creates array of 5 variables
+	char item = 0;//creates item variable to know which set of operations the calculator will be performing from
+	char item2 = 0;//creates item variable to know which set of operations the calculator will be performing from after inputting for advanced
 	while (1) {
-		scanf(" %c", &item);//takes the input for the item
+		item = select(item);
 		if (item == 'B') {//if the input is B then it will be from the binary mathematical operation set
 			float num1;//creates the first number variable
 			char operation;//creates the operation variable
 			float num2;//creates the second number variable
 			puts("Please enter the first number:");//asks for first number
 			valid = scanf("%f", &num1);//checks if it's a valid input
-			while (!valid){
+			while (!valid) {
 				puts("Invalid number");//keeps printing invalid number if the user keeps entering invalid numbers
 				while (getchar() != '\n');//flushes the input so the input can be entered again
 				valid = scanf(" %f", &num1);//asks for input again		
-			} 
+			}
 			valid = 0;//resets validity
 			puts("Please enter the operation (+ , - , * , /, %, P, X, I):");//asks for operation
 			scanf(" %c", &operation);//takes operation input
@@ -36,7 +111,7 @@ int main(void) {
 						valid = scanf("%f", &num2);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", num1 + num2);//print the sum
+					printf("The result is %f\n", binary(num1, operation, num2));//print the sum
 					break;
 				}
 				else if (operation == '-') {//if the operation is subtraction
@@ -48,7 +123,7 @@ int main(void) {
 						valid = scanf("%f", &num2);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", num1 - num2);//print the difference
+					printf("The result is %f\n", binary(num1, operation, num2));//print the difference
 					break;
 				}
 				else if (operation == '*') {//if the operation is multiplication
@@ -60,7 +135,7 @@ int main(void) {
 						valid = scanf("%f", &num2);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", num1 * num2);//print the product
+					printf("The result is %f\n", binary(num1, operation, num2));//print the product
 					break;
 				}
 				else if (operation == '/') {//if the operation is division
@@ -78,7 +153,7 @@ int main(void) {
 						}
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", num1 / num2);//print the quotient
+					printf("The result is %f\n", binary(num1, operation, num2));//print the quotient
 					break;
 				}
 				else if (operation == '%') {//if the operation is division
@@ -100,7 +175,7 @@ int main(void) {
 					int modnum2;//converts it to integer since modulus doesn't accept float values
 					modnum1 = (int)(num1);
 					modnum2 = (int)(num2);
-					printf("The result is %i\n", modnum1 % modnum2);//print the remainder
+					printf("The result is %f\n", binary(num1, operation, num2));//print the remainder
 					break;
 				}
 				else if (operation == 'P') {//if the operation is power
@@ -112,7 +187,7 @@ int main(void) {
 						valid = scanf("%f", &num2);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", pow(num1, num2));//print the power result
+					printf("The result is %f\n", binary(num1, operation, num2));//print the power result
 					break;
 				}
 				else if (operation == 'X') {//if the operation is maximum
@@ -124,7 +199,7 @@ int main(void) {
 						valid = scanf("%f", &num2);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", num1 > num2 ? (num1) : (num2));//print the maximum
+					printf("The result is %f\n", binary(num1, operation, num2));//print the maximum
 					break;
 				}
 				else if (operation == 'I') {//if the operation is minimum
@@ -136,7 +211,7 @@ int main(void) {
 						valid = scanf("%f", &num2);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", num1 < num2 ? (num1) : (num2));//print the minimum
+					printf("The result is %f\n", binary(num1, operation, num2));//print the minimum
 					break;
 				}
 				else {
@@ -145,7 +220,6 @@ int main(void) {
 					scanf(" %c", &operation);//takes operation input
 				}
 			}
-			puts("Please select your option (B , U , A , V, E)");//asks for the item again
 		}
 		else if (item == 'U') {//if the input is U then it will be from the unary mathematical operation set
 			float num;//creates the first number variable
@@ -168,7 +242,7 @@ int main(void) {
 						}
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", sqrt(num));//print the square root
+					printf("The result is %f\n", unary(num, operation));//print the square root
 					break;
 				}
 				else if (operation == 'L') {//if the operation is log
@@ -186,7 +260,7 @@ int main(void) {
 						}
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", log(num));//print the log
+					printf("The result is %f\n", unary(num, operation));//print the log
 					break;
 				}
 				else if (operation == 'E') {//if the operation is e
@@ -198,7 +272,7 @@ int main(void) {
 						valid = scanf("%f", &num);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", exp(num));//print the e
+					printf("The result is %f\n", unary(num, operation));//print the e
 					break;
 				}
 				else if (operation == 'C') {//if the operation is ceiling
@@ -210,7 +284,7 @@ int main(void) {
 						valid = scanf("%f", &num);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", ceil(num));//print the ceiling
+					printf("The result is %f\n", unary(num, operation));//print the ceiling
 					break;
 				}
 				else if (operation == 'F') {//if the operation is floor
@@ -222,7 +296,7 @@ int main(void) {
 						valid = scanf("%f", &num);//asks for input again		
 					}
 					valid = 0;//resets validity
-					printf("The result is %f\n", floor(num));//print the floor
+					printf("The result is %f\n", unary(num, operation));//print the floor
 					break;
 				}
 				else {
@@ -231,7 +305,6 @@ int main(void) {
 					scanf(" %c", &operation);//takes operation input
 				}
 			}
-			puts("Please select your option (B , U , A , V, E)");//asks for the item again
 		}
 		else if (item == 'V') {//if the input is B then it will ask to store variables
 			char letter;//creates the letter for the variable
@@ -306,11 +379,10 @@ int main(void) {
 					scanf(" %c", &letter);//takes operation input
 				}
 			}
-			puts("Please select your option (B , U , A , V, E)");//asks for the item again
 			set = 0;
 		}
 		else if (item == 'A') {//if the input is A then it will be from the advanced mathematical operation set
-			puts("Use your variable by entering B or U");
+			puts("Use your variable by entering B or U (exit with E)");
 			while (getchar() != '\n');//flushes the input so the input can be entered again
 			scanf(" %c", &item2);
 			while (1) {
@@ -358,7 +430,7 @@ int main(void) {
 						float1 = num1;
 					}
 					valid = 0;//resets validity
-					
+
 					puts("Please enter the operation (+ , - , * , /, %, P, X, I):");//asks for operation
 					scanf(" %c", &operation);//takes operation input
 					while (1) {
@@ -728,8 +800,6 @@ int main(void) {
 							scanf(" %c", &operation);//takes operation input
 						}
 					}
-					
-					puts("Please select your option (B , U , A , V, E)");//asks for the item again
 					break;
 				}
 
@@ -752,7 +822,7 @@ int main(void) {
 							while (!valid) {
 								char char1;
 								valid = scanf("%c", &char1);//checks if it's a valid input
-								if (char1 == 'a' && variables[0] >=0) {//if the letter is a, then set the final float as the first array value
+								if (char1 == 'a' && variables[0] >= 0) {//if the letter is a, then set the final float as the first array value
 									float1 = variables[0];
 									valid = 0;//resets validity
 									break;
@@ -983,8 +1053,12 @@ int main(void) {
 							scanf(" %c", &operation);//takes operation input
 						}
 					}
-					puts("Please select your option (B , U , A , V, E)");//asks for the item again
 					break;
+				}
+				else if (item2 == 'E') {//if the input is B then it will be from the binary mathematical operation set
+					if (done(item, item2) == 1) {
+						break;
+					}
 				}
 				else {
 					puts("Invalid option");//asks for input again if invalid operation
@@ -996,13 +1070,10 @@ int main(void) {
 			item2 = 0;
 		}
 		else if (item == 'E') {//if the input is E then exit the loop
-			break;
+			puts("Thanks for using my Simple Calculator. Hope to see you again soon. Goodbye!");//prints goodbye message
+			done(item, item2);
 		}
-		else {
-			puts("Invalid option");//asks for input again if invalid option
-		}
-		scanf("%c", &item);//asks for the input again
 	}
-	puts("Thanks for using my Simple Calculator. Hope to see you again soon. Goodbye!");//prints goodbye message after the loop is done
+
 	return 0;
 }
